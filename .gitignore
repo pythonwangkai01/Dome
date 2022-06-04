@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+user/conf/config.ini
+user/go.sum
+apigateway/go.sum
+vue_web/node_modules
+ztest/py/config

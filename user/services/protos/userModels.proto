@@ -1,0 +1,28 @@
+syntax="proto3";
+package services;
+option go_package = "./;protos";
+
+message UserModel{
+     // @inject_tag: json:"id"
+     uint32 Id=1;
+     //@inject_tag: json:"Uid" form:"Uid"
+     uint64 Uid = 2;
+     // @inject_tag: json:"user_name"
+     string UserName=3;
+     // @inject_tag: json:"phone"
+     string Phone=4;
+     // @inject_tag: json:"email"
+     string Email=5;
+     // @inject_tag: json:"desc"
+     string Desc=6;
+     // @inject_tag: json:"status"
+     int32 Status=7;
+     // @inject_tag: json:"created_at"
+     int64 CreatedAt=8;
+     // @inject_tag: json:"updated_at"
+     int64 UpdatedAt=9;
+     // @inject_tag: json:"deleted_at"
+     int64 DeletedAt=10;
+      
+
+}
