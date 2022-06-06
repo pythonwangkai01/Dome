@@ -27,7 +27,7 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		//token登录
 		authod := v1.Group("/")
 		authod.Use(middleware.JWT())
-		v1.DELETE("/user/delte", handlers.UserDelte)
+		v1.DELETE("/user/delte", handlers.AdminUserDelte)
 		v1.POST("/users", handlers.GetUsersList)
 		v1.POST("/user", handlers.GetUser)
 	}

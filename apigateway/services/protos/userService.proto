@@ -4,9 +4,9 @@ import "userModels.proto";
 option go_package="./;protos";
 
 message UserRequest{
-  //@inject_tag: json:"Id" form:"Id"
+  //@inject_tag: json:"id" form:"id"
   uint64 Id = 1;
-  //@inject_tag: json:"Uid" form:"Uid"
+  //@inject_tag: json:"uid" form:"uid"
   uint64 Uid = 2;
   // @inject_tag: json:"user_name" form:"user_name" uri:"user_name"
   string UserName=3;
@@ -18,8 +18,8 @@ message UserRequest{
   string Phone=6;
   // @inject_tag: json:"desc" form:"desc" uri:"desc"
   string Desc=7;
-  // @inject_tag: json:"email" form:"email" uri:"email"
-  string Email=8;
+  // @inject_tag: json:"address" form:"address" uri:"address"
+  string Address=8;
   // @inject_tag: json:"Start" form:"Start" uri:"Start"
   uint32 Start = 9;
   // @inject_tag: json:"Limit" form:"Limit" uri:"Limit"
@@ -28,12 +28,13 @@ message UserRequest{
 
 message UserListResponse{
     repeated UserModel UserList =1;
-    // @inject_tag: json:"Count"
+    // @inject_tag: json:"count"
     uint32 Count=2;
 }
 
 message UserDetailResponse{
     UserModel UserDetail =1;
+    // @inject_tag: json:"code"
     uint32 Code=2;
 }
 
@@ -41,7 +42,9 @@ service UserService{
     // 用户
     rpc UserLogin(UserRequest) returns(UserDetailResponse);
     rpc UserRegister(UserRequest) returns(UserDetailResponse);
-    rpc UserDelte(UserRequest) returns(UserDetailResponse);
     rpc GetUsersList(UserRequest) returns(UserListResponse);
     rpc GetUser(UserRequest) returns(UserDetailResponse);
+    rpc AdminUserLogin(UserRequest) returns(UserDetailResponse);
+    rpc AdminUserRegister(UserRequest) returns(UserDetailResponse);
+    rpc AdminUserDelte(UserRequest) returns(UserDetailResponse);
 }

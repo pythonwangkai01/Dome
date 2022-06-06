@@ -45,9 +45,11 @@ type UserService interface {
 	// 用户
 	UserLogin(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
 	UserRegister(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
-	UserDelte(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
 	GetUsersList(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserListResponse, error)
 	GetUser(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
+	AdminUserLogin(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
+	AdminUserRegister(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
+	AdminUserDelte(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error)
 }
 
 type userService struct {
@@ -82,16 +84,6 @@ func (c *userService) UserRegister(ctx context.Context, in *UserRequest, opts ..
 	return out, nil
 }
 
-func (c *userService) UserDelte(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error) {
-	req := c.c.NewRequest(c.name, "UserService.UserDelte", in)
-	out := new(UserDetailResponse)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userService) GetUsersList(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserListResponse, error) {
 	req := c.c.NewRequest(c.name, "UserService.GetUsersList", in)
 	out := new(UserListResponse)
@@ -112,24 +104,58 @@ func (c *userService) GetUser(ctx context.Context, in *UserRequest, opts ...clie
 	return out, nil
 }
 
+func (c *userService) AdminUserLogin(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.AdminUserLogin", in)
+	out := new(UserDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) AdminUserRegister(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.AdminUserRegister", in)
+	out := new(UserDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) AdminUserDelte(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.AdminUserDelte", in)
+	out := new(UserDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for UserService service
 
 type UserServiceHandler interface {
 	// 用户
 	UserLogin(context.Context, *UserRequest, *UserDetailResponse) error
 	UserRegister(context.Context, *UserRequest, *UserDetailResponse) error
-	UserDelte(context.Context, *UserRequest, *UserDetailResponse) error
 	GetUsersList(context.Context, *UserRequest, *UserListResponse) error
 	GetUser(context.Context, *UserRequest, *UserDetailResponse) error
+	AdminUserLogin(context.Context, *UserRequest, *UserDetailResponse) error
+	AdminUserRegister(context.Context, *UserRequest, *UserDetailResponse) error
+	AdminUserDelte(context.Context, *UserRequest, *UserDetailResponse) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
 	type userService interface {
 		UserLogin(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
 		UserRegister(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
-		UserDelte(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
 		GetUsersList(ctx context.Context, in *UserRequest, out *UserListResponse) error
 		GetUser(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
+		AdminUserLogin(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
+		AdminUserRegister(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
+		AdminUserDelte(ctx context.Context, in *UserRequest, out *UserDetailResponse) error
 	}
 	type UserService struct {
 		userService
@@ -150,14 +176,22 @@ func (h *userServiceHandler) UserRegister(ctx context.Context, in *UserRequest, 
 	return h.UserServiceHandler.UserRegister(ctx, in, out)
 }
 
-func (h *userServiceHandler) UserDelte(ctx context.Context, in *UserRequest, out *UserDetailResponse) error {
-	return h.UserServiceHandler.UserDelte(ctx, in, out)
-}
-
 func (h *userServiceHandler) GetUsersList(ctx context.Context, in *UserRequest, out *UserListResponse) error {
 	return h.UserServiceHandler.GetUsersList(ctx, in, out)
 }
 
 func (h *userServiceHandler) GetUser(ctx context.Context, in *UserRequest, out *UserDetailResponse) error {
 	return h.UserServiceHandler.GetUser(ctx, in, out)
+}
+
+func (h *userServiceHandler) AdminUserLogin(ctx context.Context, in *UserRequest, out *UserDetailResponse) error {
+	return h.UserServiceHandler.AdminUserLogin(ctx, in, out)
+}
+
+func (h *userServiceHandler) AdminUserRegister(ctx context.Context, in *UserRequest, out *UserDetailResponse) error {
+	return h.UserServiceHandler.AdminUserRegister(ctx, in, out)
+}
+
+func (h *userServiceHandler) AdminUserDelte(ctx context.Context, in *UserRequest, out *UserDetailResponse) error {
+	return h.UserServiceHandler.AdminUserDelte(ctx, in, out)
 }

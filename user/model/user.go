@@ -22,7 +22,16 @@ func (user *User) CheckPassWord(password string) bool {
 	return err == nil
 }
 
-//前端md5密码解密
-func (user *User) Md5PassWord(passwword string) string {
+//加密密码,admin
+func (admin *AdminUser) SetPassWord(password string) error {
+	b, err := bcrypt.GenerateFromPassword([]byte(password), PassWordCose)
+	e.HandlerError(err, `bcrypt.GenerateFromPassword`)
+	admin.PasswordDigest = string(b)
+	return nil
+}
 
+//检验密码
+func (admin *AdminUser) CheckPassWord(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(admin.PasswordDigest), []byte(password))
+	return err == nil
 }

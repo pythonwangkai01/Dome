@@ -9,16 +9,16 @@ import (
 var jwtSecret = []byte("seckilltode")
 
 type Claims struct {
-	Id uint `json:"id"`
+	Uid uint `json:"uid"`
 	jwt.StandardClaims
 }
 
 //签发用户
-func GenerateToken(id uint) (string, error) {
+func GenerateToken(uid uint) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(24 * time.Hour)
 	Claims := Claims{
-		Id: id,
+		Uid: uid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "seckill",

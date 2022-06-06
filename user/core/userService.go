@@ -18,7 +18,7 @@ func BuildUser(item model.User) *userpb.UserModel {
 		CreatedAt: item.CreatedAt.Unix(),
 		UpdatedAt: item.UpdatedAt.Unix(),
 		Phone:     item.Phone,
-		Email:     item.Email,
+		Address:   item.Address,
 		Status:    int32(item.Status),
 	}
 	return &userModel
@@ -30,15 +30,18 @@ func (*UserService) UserLogin(ctx context.Context, req *userpb.UserRequest, resp
 	if err := model.DB.Where("user_name=?", req.UserName).First(&user).Error; err != nil {
 		if gorm.IsRecordNotFoundError(err) {
 			resp.Code = http.StatusBadRequest
-			return nil
+			err := errors.New("数据库查询失败")
+			return err
 		}
 		resp.Code = 500
-		return nil
+		err := errors.New("username查询失败")
+		return err
 	}
 	//校验密码
 	if user.CheckPassWord(req.Password) == false {
 		resp.Code = http.StatusBadRequest
-		return nil
+		err := errors.New("密码错误")
+		return err
 	}
 	resp.UserDetail = BuildUser(user)
 	return nil
@@ -60,7 +63,7 @@ func (*UserService) UserRegister(ctx context.Context, req *userpb.UserRequest, r
 	userdata := model.User{
 		UserName: req.UserName,
 		Phone:    req.Phone,
-		Email:    req.Email,
+		Address:  req.Address,
 		Uid:      uint(req.Uid),
 		Status:   1, //正常：1 封号：2 删除：3
 	}
@@ -77,36 +80,26 @@ func (*UserService) UserRegister(ctx context.Context, req *userpb.UserRequest, r
 	return nil
 
 }
-func (*UserService) UserDelte(ctx context.Context, req *userpb.UserRequest, resp *userpb.UserDetailResponse) error {
-	err := model.DB.Model(&model.User{}).Where("id=? AND uid=?", req.Id, req.Uid).Delete(&model.User{}).Error
-	if err != nil {
-		return errors.New("删除失败" + err.Error())
-
-	}
-	return nil
-}
 
 //获取用户列表
 func (*UserService) GetUsersList(ctx context.Context, req *userpb.UserRequest, resp *userpb.UserListResponse) error {
 	if req.Limit == 0 {
 		req.Limit = 10
 	}
-
 	var userData []model.User
 	var count uint32
 
 	//查找用户
 	//指定获取记录的最大值 offset 指定在开始返回记录之前要跳过的记录数量
-	err := model.DB.Offset(req.Start).Limit(req.Limit).Where("uid=?", req.Uid).First(&userData).Error
+	err := model.DB.Offset(req.Start).Limit(req.Limit).Find(&userData).Error
 	if err != nil {
 		return errors.New("mysql find:" + err.Error())
 	}
-	//统计数量
-	model.DB.Model(&model.User{}).Where("uid=?", req.Uid).Count(&count)
 	//返回protoc数据
 	var userRes []*userpb.UserModel
 	for _, item := range userData {
 		userRes = append(userRes, BuildUser(item))
+		count++
 	}
 	resp.UserList = userRes
 	resp.Count = count

@@ -5,14 +5,14 @@ option go_package = "./;protos";
 message UserModel{
      // @inject_tag: json:"id"
      uint32 Id=1;
-     //@inject_tag: json:"Uid" form:"Uid"
+     //@inject_tag: json:"uid" form:"uid"
      uint64 Uid = 2;
      // @inject_tag: json:"user_name"
      string UserName=3;
      // @inject_tag: json:"phone"
      string Phone=4;
-     // @inject_tag: json:"email"
-     string Email=5;
+     // @inject_tag: json:"address"
+     string Address=5;
      // @inject_tag: json:"desc"
      string Desc=6;
      // @inject_tag: json:"status"
@@ -26,3 +26,4 @@ message UserModel{
       
 
 }
+
