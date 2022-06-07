@@ -21,7 +21,9 @@ func UserRegister(ctx *gin.Context) {
 	udr, err := us.UserRegister(context.Background(), &userReq)
 	PanicIfUserError(err)
 	ctx.JSON(http.StatusOK, gin.H{
-		"data": udr,
+		"code": udr.Code,
+		"msg":  "注册成功",
+		"data": udr.UserDetail,
 	})
 }
 
@@ -58,6 +60,8 @@ func GetUsersList(ctx *gin.Context) {
 	udr, err := us.GetUsersList(context.Background(), &userReq)
 	PanicIfUserError(err)
 	ctx.JSON(http.StatusOK, gin.H{
+		"code": http.StatusOK,
+		"msg":  "成功",
 		"data": gin.H{
 			"user":  udr.UserList,
 			"count": udr.Count,
@@ -76,6 +80,8 @@ func GetUser(ctx *gin.Context) {
 	udr, err := us.GetUser(context.Background(), &userReq)
 	PanicIfUserError(err)
 	ctx.JSON(http.StatusOK, gin.H{
+		"code": udr.Code,
+		"msg":  "成功",
 		"data": udr.UserDetail,
 	})
 }
@@ -94,6 +100,8 @@ func AdminUserDelte(ctx *gin.Context) {
 	udr, err := us.AdminUserDelte(context.Background(), &userReq)
 	PanicIfUserError(err)
 	ctx.JSON(http.StatusOK, gin.H{
+		"code": udr.Code,
+		"msg":  "删除成功",
 		"data": udr.UserDetail,
 	})
 }

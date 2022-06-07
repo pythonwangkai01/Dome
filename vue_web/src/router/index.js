@@ -1,25 +1,46 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+
 
 const routes = [
+  //首页
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Index',
+    component: ()=>import('../views/Index.vue')
   },
+  //登录页
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  //布局页
+  {
+    path: '/layout', 
+    name:'Layout',
+    component:()=>import('../views/Layout.vue')
+  },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+//导入nprogress 
+import Nprogress from 'nprogress'
+//导入nprogress样式
+import 'nprogress/nprogress.css'
+
+//定义路由导航前置守卫
+router.beforeEach((to,from,next)=>{
+  Nprogress.start();
+  next()
+})
+//定义路由导航后置守卫
+router.afterEach((to,from)=>{
+  Nprogress.done();
+
 })
 
 export default router

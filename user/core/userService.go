@@ -44,6 +44,7 @@ func (*UserService) UserLogin(ctx context.Context, req *userpb.UserRequest, resp
 		return err
 	}
 	resp.UserDetail = BuildUser(user)
+	resp.Code = http.StatusOK
 	return nil
 }
 
@@ -75,8 +76,8 @@ func (*UserService) UserRegister(ctx context.Context, req *userpb.UserRequest, r
 	if err := model.DB.Create(&userdata).Error; err != nil {
 		return err
 	}
-
 	resp.UserDetail = BuildUser(userdata)
+	resp.Code = http.StatusOK
 	return nil
 
 }
@@ -111,5 +112,6 @@ func (*UserService) GetUser(ctx context.Context, req *userpb.UserRequest, resp *
 	model.DB.First(&userData, req.Id)
 	userRes := BuildUser(userData)
 	resp.UserDetail = userRes
+	resp.Code = http.StatusOK
 	return nil
 }
