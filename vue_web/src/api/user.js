@@ -21,7 +21,7 @@ export let Login = async (params) => {
 }
 
 //定义注册方法
-export let UserRegister = async (params) => {
+export let Register = async (params) => {
     params.password = md5(params.password)
     params.password_confirm = md5(params.password_confirm)
     let {code,msg,data} = await $post('/user/register',params)
@@ -30,5 +30,5 @@ export let UserRegister = async (params) => {
     }else{
         $msg_error(msg)
     }
-    return data.data
+    return code
 }

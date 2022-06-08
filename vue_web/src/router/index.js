@@ -14,12 +14,19 @@ const routes = [
     name: 'Login',
     component: () => import('../views/Login.vue')
   },
+  //注册页
+  {
+    path: '/register',
+    name: 'Register',
+    component: ()=>import('../views/Register.vue')
+  },
   //布局页
   {
     path: '/layout', 
     name:'Layout',
     component:()=>import('../views/Layout.vue')
   },
+
 ]
 
 const router = createRouter({

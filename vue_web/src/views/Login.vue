@@ -54,11 +54,16 @@ export default {
                 $router.push('./layout')
             }
         }
+        //注册请求
+        let userRegister = async () =>{
+            $router.push('./register')
+        }
         return{
             ...toRefs(loginData),
-            userLogin
+            userLogin,
+            userRegister
         }
-
+       
     }
 
 }
