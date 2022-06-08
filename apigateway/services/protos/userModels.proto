@@ -23,7 +23,8 @@ message UserModel{
      int64 UpdatedAt=9;
      // @inject_tag: json:"deleted_at"
      int64 DeletedAt=10;
-      
+      // @inject_tag: json:"create_uid"
+      uint32 CreateUid = 11;
 
 }
 

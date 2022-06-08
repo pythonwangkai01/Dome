@@ -23,6 +23,7 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		//用户服务
 		v1.POST("/user/register", handlers.UserRegister)
 		v1.POST("/user/login", handlers.UserLogin)
+		v1.POST("/user/admin/login", handlers.AdminUserLogin)
 
 		//token登录
 		authod := v1.Group("/")
@@ -32,7 +33,6 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		v1.POST("/user", handlers.GetUser)
 		// admin 权限
 		v1.POST("/user/admin/register", handlers.AdminUserRegister)
-		v1.POST("/user/admin/login", handlers.AdminUserLogin)
 	}
 
 	return ginRouter

@@ -20,15 +20,18 @@ message UserRequest{
   string Desc=7;
   // @inject_tag: json:"address" form:"address" uri:"address"
   string Address=8;
-  // @inject_tag: json:"Start" form:"Start" uri:"Start"
+  // @inject_tag: json:"start" form:"start" uri:"start"
   uint32 Start = 9;
-  // @inject_tag: json:"Limit" form:"Limit" uri:"Limit"
+  // @inject_tag: json:"limit" form:"limit" uri:"limit"
   uint32 Limit = 10;
+  // @inject_tag: json:"create_uid" form:"create_uid" uri:"create_uid"
+  uint32 CreateUid = 11;
+
 }
 
 message UserListResponse{
     repeated UserModel UserList =1;
-    // @inject_tag: json:"count"
+    // @inject_tag: json:"Count"
     uint32 Count=2;
 }
 

@@ -112,7 +112,10 @@ func AdminUserRegister(ctx *gin.Context) {
 	PanicIfUserError(ctx.ShouldBind(&userReq))
 	//gin.key中取出服务实例
 	us := ctx.Keys["UserService"].(userpb.UserService)
-	//生成uid
+	//获取权限uid
+	claim, _ := utils.ParseToken(ctx.GetHeader("Authorization"))
+	userReq.CreateUid = uint32(claim.Uid)
+	//生成创建admin用户的uid
 	userReq.Uid = uint64(utils.UniqueId())
 	//context.Background() 返回一个空的Context,我们可以用这个 空的 Context 作为 goroutine 的root 节点
 	udr, err := us.AdminUserRegister(context.Background(), &userReq)

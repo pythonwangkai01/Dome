@@ -14,6 +14,7 @@ func BuildAdminUser(item model.AdminUser) *userpb.UserModel {
 	userModel := userpb.UserModel{
 		Id:        uint32(item.ID),
 		Uid:       uint64(item.Uid),
+		CreateUid: uint32(item.CreateUid),
 		UserName:  item.UserName,
 		Phone:     item.Phone,
 		CreatedAt: item.CreatedAt.Unix(),
@@ -47,7 +48,7 @@ func (*UserService) AdminUserLogin(ctx context.Context, req *userpb.UserRequest,
 //创建admin用户
 func (*UserService) AdminUserRegister(ctx context.Context, req *userpb.UserRequest, resp *userpb.UserDetailResponse) error {
 	//只有admin权限能创建admin
-	if err := model.DB.Model(&model.AdminUser{}).Where("uid=?", req.Uid).Error; err != nil {
+	if err := model.DB.Model(&model.AdminUser{}).Where("create_uid=?", req.CreateUid).First(&model.AdminUser{}).Error; err != nil {
 		err := errors.New("无权限操作")
 		return err
 	}
@@ -65,9 +66,10 @@ func (*UserService) AdminUserRegister(ctx context.Context, req *userpb.UserReque
 		return err
 	}
 	userdata := model.AdminUser{
-		UserName: req.UserName,
-		Phone:    req.Phone,
-		Uid:      uint(req.Uid),
+		UserName:  req.UserName,
+		Phone:     req.Phone,
+		Uid:       uint(req.Uid),
+		CreateUid: uint(req.CreateUid),
 	}
 	//加密密码
 	err := userdata.SetPassWord(req.Password)

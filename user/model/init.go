@@ -45,6 +45,7 @@ func initAdmin() {
 		PasswordDigest: SetPassWord("123456"),
 		Phone:          "18717908454",
 		Uid:            1314521,
+		CreateUid:      1314521,
 	}
 	err := DB.Where("user_name=?", adminuser.UserName).First(&adminuser).Error
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Uid            uint   `gorm:"not null";`
+	Uid            uint   `gorm:"not null";gorm:"unique"`
 	Phone          string `gorm:"unique"`
 	UserName       string `gorm:"unique"`
 	Address        string
@@ -17,10 +17,11 @@ type User struct {
 
 type AdminUser struct {
 	gorm.Model
-	Uid            uint   `gorm:"not null";`
+	Uid            uint   `gorm:"not null";gorm:"unique"`
 	Phone          string `gorm:"unique"`
 	UserName       string `gorm:"unique"`
 	PasswordDigest string
+	CreateUid      uint `gorm:"not null"`
 }
 
 func migration() {
