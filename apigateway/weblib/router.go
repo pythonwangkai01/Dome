@@ -30,6 +30,9 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		v1.DELETE("/user/delte", handlers.AdminUserDelte)
 		v1.POST("/users", handlers.GetUsersList)
 		v1.POST("/user", handlers.GetUser)
+		// admin 权限
+		v1.POST("/user/admin/register", handlers.AdminUserRegister)
+		v1.POST("/user/admin/login", handlers.AdminUserLogin)
 	}
 
 	return ginRouter

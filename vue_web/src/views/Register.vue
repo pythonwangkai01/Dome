@@ -2,7 +2,7 @@
     <div class="container">
         <div class="register">
             <div class="item">
-                <h3>注册界面</h3>
+                <h1>注册界面</h1>
             </div>
             <div class="item">
               <span>账号:</span>
@@ -23,7 +23,7 @@
             <div class="item">
               <span></span>
               <el-button size="mini" type="primary" @click="userRegister">注册</el-button>
-              <el-button size="mini">取消</el-button>
+              <el-button size="mini" type="primary" @click="cancel">取消</el-button>
             </div>
         </div>
     </div>
@@ -55,13 +55,17 @@ export default {
                 phone,
             })
             if (code==200){
-                
-                    await $router.push('./login')
+                await $router.push('./login')
             }
+        }
+        // 取消回登录界面
+        let cancel = async()=>{
+            await $router.push('./login')
         }
         return{
             ...toRefs(userRegisterData), //让数据保持响应式。将多个数据变成响应式数据。
-            userRegister
+            userRegister,
+            cancel
         }
 
     }
@@ -77,7 +81,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    .login{
+    .register{
         width: 600px;
         border: 1px solid #eee;
         border-radius: 8px;
@@ -89,12 +93,13 @@ export default {
             font-size: 15px;
             align-items: center;
             margin: 10px 5px;
-            h2{
+
+            h1{
                 flex: 1;
                 text-align: center;
             }
             span{
-                width: 70px;
+                width: 100px;
                 text-align: right;
             }
         }

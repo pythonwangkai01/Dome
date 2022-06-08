@@ -51,15 +51,9 @@
     active-text-color="#ffd04b"
   >
     <el-menu-item index="1">首页</el-menu-item>
-    <el-menu-item index="2">邮件</el-menu-item>
-    <el-menu-item index="3">账单</el-menu-item>
-    <el-sub-menu index="4">
-      <template #title>切换皮肤</template>
-      <el-menu-item index="2-1">蓝色主题</el-menu-item>
-      <el-menu-item index="2-2">绿色主题</el-menu-item>
-      <el-menu-item index="2-3">黄色主题</el-menu-item>
-      <el-menu-item index="2-4">黑色主题</el-menu-item>
-    </el-sub-menu>
+    <el-menu-item index="2">功能界面</el-menu-item>
+    <el-menu-item index="3">自动化界面</el-menu-item>
+    <el-menu-item index="4">工具界面</el-menu-item>
     <el-sub-menu index="5">
       <template #title>管理员</template>
       <el-menu-item index="3-1">个人中心</el-menu-item>

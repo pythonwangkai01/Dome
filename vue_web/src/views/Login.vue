@@ -16,9 +16,6 @@
               <span></span>
               <el-button size="mini" type="primary" @click="userLogin">登录</el-button>
               <el-button size="mini">取消</el-button>
-          </div>
-          <div class="item">
-              <span></span>
               <el-button size="mini" type="primary" @click="userRegister">注册</el-button>
           </div>
           <div class="item">

@@ -105,3 +105,42 @@ func AdminUserDelte(ctx *gin.Context) {
 		"data": udr.UserDetail,
 	})
 }
+
+//admin init user
+func AdminUserRegister(ctx *gin.Context) {
+	var userReq userpb.UserRequest
+	PanicIfUserError(ctx.ShouldBind(&userReq))
+	//gin.key中取出服务实例
+	us := ctx.Keys["UserService"].(userpb.UserService)
+	//生成uid
+	userReq.Uid = uint64(utils.UniqueId())
+	//context.Background() 返回一个空的Context,我们可以用这个 空的 Context 作为 goroutine 的root 节点
+	udr, err := us.AdminUserRegister(context.Background(), &userReq)
+	PanicIfUserError(err)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": udr.Code,
+		"msg":  "注册成功",
+		"data": udr.UserDetail,
+	})
+}
+
+func AdminUserLogin(ctx *gin.Context) {
+	var userReq userpb.UserRequest
+	PanicIfUserError(ctx.ShouldBind(&userReq))
+	//gin.key中取出服务实例
+	us := ctx.Keys["UserService"].(userpb.UserService)
+	//context.Background() 返回一个空的Context,我们可以用这个 空的 Context 作为 goroutine 的root 节点
+	udr, err := us.AdminUserLogin(context.Background(), &userReq)
+	PanicIfUserError(err)
+
+	token, err := utils.GenerateToken(uint(udr.UserDetail.Uid))
+	PanicIfUserError(err)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": udr.Code,
+		"msg":  "成功",
+		"data": gin.H{
+			"user":  udr.UserDetail,
+			"token": token,
+		},
+	})
+}

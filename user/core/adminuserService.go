@@ -40,11 +40,18 @@ func (*UserService) AdminUserLogin(ctx context.Context, req *userpb.UserRequest,
 		return nil
 	}
 	resp.UserDetail = BuildAdminUser(adminuser)
+	resp.Code = http.StatusOK
 	return nil
 }
 
 //创建admin用户
 func (*UserService) AdminUserRegister(ctx context.Context, req *userpb.UserRequest, resp *userpb.UserDetailResponse) error {
+	//只有admin权限能创建admin
+	if err := model.DB.Model(&model.AdminUser{}).Where("uid=?", req.Uid).Error; err != nil {
+		err := errors.New("无权限操作")
+		return err
+	}
+
 	if req.Password != req.PasswordConfirm {
 		err := errors.New("两次密码不一致")
 		return err
@@ -72,12 +79,18 @@ func (*UserService) AdminUserRegister(ctx context.Context, req *userpb.UserReque
 	}
 
 	resp.UserDetail = BuildAdminUser(userdata)
+	resp.Code = http.StatusOK
 	return nil
 
 }
 
 //上层加个手机验证吧（TODO），这里只处理数据层的逻辑
 func (*UserService) AdminUserDelte(ctx context.Context, req *userpb.UserRequest, resp *userpb.UserDetailResponse) error {
+
+	if err := model.DB.Model(&model.AdminUser{}).Where("uid=?", req.Uid).Error; err != nil {
+		err := errors.New("无权限操作")
+		return err
+	}
 	//删除需要admin权限到上面一层做
 	err := model.DB.Model(&model.AdminUser{}).Where("uid=?", req.Uid).Find(&model.AdminUser{}).Error
 	if err != nil {
@@ -85,5 +98,6 @@ func (*UserService) AdminUserDelte(ctx context.Context, req *userpb.UserRequest,
 
 	}
 	model.DB.Where("user_name=?", req.UserName).Delete(&model.User{})
+	resp.Code = http.StatusOK
 	return nil
 }
